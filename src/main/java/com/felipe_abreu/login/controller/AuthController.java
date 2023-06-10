@@ -1,10 +1,8 @@
 package com.felipe_abreu.login.controller;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.felipe_abreu.login.model.JwtToken;
 import com.felipe_abreu.login.model.UserModel;
 import com.felipe_abreu.login.service.TokenService;
-import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,8 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Date;
 
 import static com.felipe_abreu.login.config.Constants.HEADER_ATTRIBUTE;
 
@@ -31,7 +27,7 @@ public class AuthController {
     @Autowired
     private TokenService tokenService;
 
-    @PostMapping("/login")
+    @PostMapping("/authenticate")
     public ResponseEntity<JwtToken> login(@RequestBody UserModel login) {
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =

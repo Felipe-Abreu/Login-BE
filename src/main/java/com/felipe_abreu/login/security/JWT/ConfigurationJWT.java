@@ -15,7 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -43,17 +42,14 @@ public class ConfigurationJWT {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .addFilter(new FilterAuthJWT(authentication -> {
-                    return authentication;
-                })).addFilter(new ValidFilterJWT(authentication -> {
-                    return authentication;
-                }, userRepository))
+                .addFilter(new FilterAuthJWT(authentication -> authentication))
+                .addFilter(new ValidFilterJWT(authentication -> authentication, userRepository))
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/register").permitAll()
-                .antMatchers("/api/login").permitAll()
+                .antMatchers("/api/authenticate").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
